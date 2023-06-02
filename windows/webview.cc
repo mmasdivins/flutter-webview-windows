@@ -9,6 +9,7 @@
 #include "util/string_converter.h"
 #include "webview_host.h"
 
+
 using namespace Microsoft::WRL;
 
 namespace {
@@ -206,6 +207,43 @@ void Webview::RegisterEventHandlers() {
           })
           .Get(),
       &event_registrations_.navigation_completed_token_);
+
+  webview_->add_NavigationStarting(      
+      Callback<ICoreWebView2NavigationStartingEventHandler>(
+          [this](ICoreWebView2* sender,
+                 ICoreWebView2NavigationStartingEventArgs* args) -> HRESULT {
+
+            return S_OK;
+          })
+          .Get(),
+      &event_registrations_.navigation_starting_token_);
+
+  
+  webview_->add_WebResourceRequested(
+    Callback<ICoreWebView2WebResourceRequestedEventHandler>(
+        [this](ICoreWebView2* sender,
+                ICoreWebView2WebResourceRequestedEventArgs* args) -> HRESULT {
+        COREWEBVIEW2_WEB_RESOURCE_CONTEXT resourceContext;
+        args->get_ResourceContext(&resourceContext);
+        ICoreWebView2WebResourceRequest* req = nullptr;
+        ICoreWebView2HttpRequestHeaders* headers = nullptr;
+        args->get_Request(&req);
+        req->get_Headers(&headers);
+
+        for (auto it = headers_.begin(); it != headers_.end(); ++it) {
+            const std::string key = it->first;
+            const std::string value = it->second;
+            std::wstring wideKey(key.begin(), key.end());
+            std::wstring wideValue(value.begin(), value.end());
+
+            headers->SetHeader(wideKey.c_str(), wideValue.c_str());
+        }
+
+        return S_OK;
+        })
+        .Get(),
+    &event_registrations_.web_resource_requested_token_);
+
 
   webview_->add_HistoryChanged(
       Callback<ICoreWebView2HistoryChangedEventHandler>(
@@ -584,6 +622,15 @@ void Webview::SetPointerButtonState(WebviewPointerButton button, bool is_down) {
                                           last_cursor_pos_);
 }
 
+void Webview::SetHeaders(std::map<std::string, std::string>& headers) {
+  headers_ = headers;
+}
+
+std::map<std::string, std::string> Webview::GetHeaders() {
+  return headers_;
+}
+
+
 void Webview::SendScroll(double delta, bool horizontal) {
   // delta * 6 gives me a multiple of WHEEL_DELTA (120)
   constexpr auto kScrollMultiplier = 6;
@@ -618,8 +665,14 @@ void Webview::SetScrollDelta(double delta_x, double delta_y) {
   }
 }
 
-void Webview::LoadUrl(const std::string& url) {
+void Webview::LoadUrl(const std::string& url, const std::map<std::string, std::string>& nheaders) {
   if (IsValid()) {
+
+    webview_->AddWebResourceRequestedFilter(
+        L"*", COREWEBVIEW2_WEB_RESOURCE_CONTEXT_ALL);
+
+    headers_ = nheaders;
+
     webview_->Navigate(util::Utf16FromUtf8(url).c_str());
   }
 }

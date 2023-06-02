@@ -77,6 +77,8 @@ struct EventRegistrations {
   EventRegistrationToken source_changed_token_{};
   EventRegistrationToken content_loading_token_{};
   EventRegistrationToken navigation_completed_token_{};
+  EventRegistrationToken navigation_starting_token_{};
+  EventRegistrationToken web_resource_requested_token_{};
   EventRegistrationToken history_changed_token_{};
   EventRegistrationToken document_title_changed_token_{};
   EventRegistrationToken cursor_changed_token_{};
@@ -131,7 +133,8 @@ class Webview {
                         double x, double y, double size, double pressure);
   void SetPointerButtonState(WebviewPointerButton button, bool isDown);
   void SetScrollDelta(double delta_x, double delta_y);
-  void LoadUrl(const std::string& url);
+  void LoadUrl(const std::string& url,
+               const std::map<std::string, std::string>& nheaders);
   void LoadStringContent(const std::string& content);
   bool Stop();
   bool Reload();
@@ -213,6 +216,7 @@ class Webview {
   HWND hwnd_;
   bool owns_window_;
   bool is_valid_ = false;
+  std::map<std::string, std::string> headers_;
   float scale_factor_ = 1.0;
   wil::com_ptr<ICoreWebView2CompositionController> composition_controller_;
   wil::com_ptr<ICoreWebView2Controller3> webview_controller_;
@@ -255,5 +259,7 @@ class Webview {
       HWND hwnd, bool offscreen_only);
   void RegisterEventHandlers();
   void EnableSecurityUpdates();
+  void SetHeaders(std::map<std::string, std::string>& headers);
+  std::map<std::string, std::string> GetHeaders();
   void SendScroll(double offset, bool horizontal);
 };

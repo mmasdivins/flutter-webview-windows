@@ -61,7 +61,9 @@ class _ExampleBrowser extends State<ExampleBrowser> {
 
       await _controller.setBackgroundColor(Colors.transparent);
       await _controller.setPopupWindowPolicy(WebviewPopupWindowPolicy.deny);
-      await _controller.loadUrl('https://flutter.dev');
+
+      final map = <String, String>{"ServiceAuth": "Bearer eyJhbGciOiJBMjU2S1ciLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwidHlwIjoiU2VydmljZSIsImN0eSI6IkpXVCJ9.97lhHUzImcbbQvl5Dnq8A92ftwzKk6F_6XQFjoKJbxSjAXSNtVSHsW7D6KOZ3owmD2VL2OCq_CqcNGkiPzAkea-IVLs0-rA4.n6ZIqryH9nq8LwLKGZSGaA.WiV_MBKKwmCbuef1V-wOnMEC1Z5E0g-FvI1XdLhZ86e-oCwYFXsSCJWkazePrKEo4u6jqfn3a__nMoFyqrT605QLOxhzCCUcZ-6TtOp-VWZKDJn6mpH61_SKTcY4IVfZ6u6POjd0L-diVoiuJS0sAxZajMVSgchPfBIO4dXRj0lwR2X7hjoSrvNvSmHservWjvtLyNjgNPOjLZw8AKas1n9jM4lR-92gsmShDfufG6RyhhIyI45VkYXTT8WX44ZZ7wvTN_FrYnr6Ie8yTw3vBARnjOQzs7QJeKCV190FNkhCqrrM1n4ka1KVUqqAnSs08RViiRsOeP2BvepM2xJqfpwT-y1rg8jxHFrkiVj3BFs3CZk-KyEXgdbexynZ8pM-ZvdAirsacIp7cp2Bedf3ztd_ZAUJyIdKcQ6AxH6dEGEGpuw57RuU7Vvq_55NKH9NZptobUgoppvWQTBc958XHPufXgX_8Srtw1mV9cBWQiNACzyQwI90mBj59zL0uLCwWEOoEdAHbFD36l3KW_Qu1A.WNb6ZI9j0P5t2T7FgNNMojC1TuVOqpZGtE6MfERKiAs"};
+      await _controller.loadUrl('https://localhost:44379/api/Pdf?pdf=C:\\src\\level1_v1.0.1.pdf&schema=PROVES', map);
 
       if (!mounted) return;
       setState(() {});
@@ -118,7 +120,8 @@ class _ExampleBrowser extends State<ExampleBrowser> {
                     textAlignVertical: TextAlignVertical.center,
                     controller: _textController,
                     onSubmitted: (val) {
-                      _controller.loadUrl(val);
+                      final map = <String, String>{"ServiceAuth": "Bearer eyJhbGciOiJBMjU2S1ciLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwidHlwIjoiU2VydmljZSIsImN0eSI6IkpXVCJ9.97lhHUzImcbbQvl5Dnq8A92ftwzKk6F_6XQFjoKJbxSjAXSNtVSHsW7D6KOZ3owmD2VL2OCq_CqcNGkiPzAkea-IVLs0-rA4.n6ZIqryH9nq8LwLKGZSGaA.WiV_MBKKwmCbuef1V-wOnMEC1Z5E0g-FvI1XdLhZ86e-oCwYFXsSCJWkazePrKEo4u6jqfn3a__nMoFyqrT605QLOxhzCCUcZ-6TtOp-VWZKDJn6mpH61_SKTcY4IVfZ6u6POjd0L-diVoiuJS0sAxZajMVSgchPfBIO4dXRj0lwR2X7hjoSrvNvSmHservWjvtLyNjgNPOjLZw8AKas1n9jM4lR-92gsmShDfufG6RyhhIyI45VkYXTT8WX44ZZ7wvTN_FrYnr6Ie8yTw3vBARnjOQzs7QJeKCV190FNkhCqrrM1n4ka1KVUqqAnSs08RViiRsOeP2BvepM2xJqfpwT-y1rg8jxHFrkiVj3BFs3CZk-KyEXgdbexynZ8pM-ZvdAirsacIp7cp2Bedf3ztd_ZAUJyIdKcQ6AxH6dEGEGpuw57RuU7Vvq_55NKH9NZptobUgoppvWQTBc958XHPufXgX_8Srtw1mV9cBWQiNACzyQwI90mBj59zL0uLCwWEOoEdAHbFD36l3KW_Qu1A.WNb6ZI9j0P5t2T7FgNNMojC1TuVOqpZGtE6MfERKiAs"};
+                      _controller.loadUrl(val, map);
                     },
                   ),
                 ),

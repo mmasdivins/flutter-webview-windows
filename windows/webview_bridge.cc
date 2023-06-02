@@ -2,7 +2,9 @@
 
 #include <flutter/event_stream_handler_functions.h>
 #include <flutter/method_result_functions.h>
-
+#include <flutter/standard_method_codec.h>
+#include <flutter/encodable_value.h>
+#include <map>
 #include <format>
 
 #ifdef HAVE_FLUTTER_D3D_TEXTURE
@@ -431,11 +433,26 @@ void WebviewBridge::HandleMethodCall(
 
   // loadUrl: string
   if (method_name.compare(kMethodLoadUrl) == 0) {
-    if (const auto url = std::get_if<std::string>(method_call.arguments())) {
-      webview_->LoadUrl(*url);
-      return result->Success();
+
+    const flutter::EncodableList* list =
+        std::get_if<flutter::EncodableList>(method_call.arguments());
+    if (!list || list->size() != 2) {
+      return result->Error(kErrorInvalidArgs);
     }
-    return result->Error(kErrorInvalidArgs);
+
+    const auto url = std::get_if<std::string>(&(*list)[0]);
+    const auto* encodableMap = std::get_if<flutter::EncodableMap>(&(*list)[1]);
+
+    std::map<std::string, std::string> resultMap;
+
+     for (auto it = encodableMap->begin(); it != encodableMap->end(); ++it) {
+      const std::string key = std::get<std::string>(it->first);
+      const std::string value = std::get<std::string>(it->second);
+      resultMap[key] = value;
+    }
+
+    webview_->LoadUrl(*url, resultMap);
+    return result->Success();
   }
 
   // loadStringContent: string
