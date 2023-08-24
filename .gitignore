@@ -7,3 +7,17 @@
 build/
 
 pubspec.lock
+.idea/vcs.xml
+.idea/libraries/Flutter_Plugins.xml
+example/windows/flutter/generated_plugins.cmake
+windows/.vs/CMake Overview
+windows/.vs/ProjectSettings.json
+windows/.vs/slnx.sqlite
+windows/.vs/VSWorkspaceState.json
+windows/.vs/windows/FileContentIndex/1ae65e1d-f5e0-42b7-9847-a5ca81f6e438.vsidx
+windows/.vs/windows/FileContentIndex/2f099e4c-f730-4f22-a382-2a86570747b2.vsidx
+windows/.vs/windows/FileContentIndex/4e5ba63c-7f54-4cb0-82eb-a695d77b4d49.vsidx
+windows/.vs/windows/FileContentIndex/bc2727cd-55df-454e-8d0e-732c2892abd1.vsidx
+windows/.vs/windows/FileContentIndex/read.lock
+windows/.vs/windows/v17/.wsuo
+windows/.vs/windows/v17/Browse.VC.db
