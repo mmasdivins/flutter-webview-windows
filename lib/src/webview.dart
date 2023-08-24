@@ -147,7 +147,7 @@ class WebviewController extends ValueNotifier<WebviewValue> {
   Stream<SystemMouseCursor> get _cursor => _cursorStreamController.stream;
 
   final StreamController<dynamic> _webMessageStreamController =
-      StreamController<dynamic>();
+      StreamController<dynamic>.broadcast();
 
   Stream<dynamic> get webMessage => _webMessageStreamController.stream;
 
